@@ -21,36 +21,48 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.rashid.saleem.signupform.ui.signUp.SignUpAction
+import com.rashid.saleem.signupform.ui.signUp.SignUpUiState
 import com.rashid.saleem.signupform.ui.theme.SignUpFormTheme
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun PasswordContainer() {
+fun PasswordContainer(
+    uiState: SignUpUiState,
+    onAction: (SignUpAction) -> Unit
+) {
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
         TextField(
-            value = "",
-            onValueChange = { },
+            value = uiState.password,
+            onValueChange = {
+                onAction(SignUpAction.UpdatePassword(it))
+            },
             modifier = Modifier.fillMaxWidth(),
-            placeholder = {
+            label = {
                 Text("Enter Password")
-            }
+            },
+            singleLine = true
         )
         Spacer(modifier = Modifier.height(12.dp))
         TextField(
-            value = "",
-            onValueChange = { },
+            value = uiState.reEnterPassword,
+            onValueChange = {
+                onAction(SignUpAction.UpdateReenterPassword(it))
+            },
             modifier = Modifier.fillMaxWidth(),
-            placeholder = {
+            label = {
                 Text("Re-enter Password")
-            }
+            },
+            singleLine = true
         )
         Spacer(modifier = Modifier.height(12.dp))
         FlowRow(
@@ -113,7 +125,13 @@ private fun ValidationCheckIndicator(
 private fun PasswordContainerPreview() {
     SignUpFormTheme {
         Surface {
-            PasswordContainer()
+            val uiState = remember {
+                SignUpUiState()
+            }
+            PasswordContainer(
+                uiState = uiState,
+                onAction = { }
+            )
         }
     }
 }
