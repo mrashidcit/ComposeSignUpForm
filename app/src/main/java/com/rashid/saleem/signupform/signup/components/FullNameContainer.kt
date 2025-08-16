@@ -15,7 +15,9 @@ import com.rashid.saleem.signupform.ui.theme.SignUpFormTheme
 
 @Composable
 fun FullNameContainer(modifier: Modifier = Modifier) {
-    Column {
+    Column(
+        modifier = modifier
+    ) {
         TextField(
             value = "",
             onValueChange = { },

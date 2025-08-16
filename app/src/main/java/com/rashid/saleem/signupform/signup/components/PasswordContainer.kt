@@ -34,7 +34,7 @@ import com.rashid.saleem.signupform.ui.theme.SignUpFormTheme
 @Composable
 fun PasswordContainer(modifier: Modifier = Modifier) {
     Column(
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
         TextField(
             value = "sdfsaef",

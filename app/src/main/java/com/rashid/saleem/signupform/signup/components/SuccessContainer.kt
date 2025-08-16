@@ -1,5 +1,6 @@
 package com.rashid.saleem.signupform.signup.components
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,8 +22,9 @@ import com.rashid.saleem.signupform.ui.theme.SignUpFormTheme
 @Composable
 fun SuccessContainer(modifier: Modifier = Modifier) {
     Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
     ) {
         Icon(
             painter = painterResource(R.drawable.baseline_check_circle_24),

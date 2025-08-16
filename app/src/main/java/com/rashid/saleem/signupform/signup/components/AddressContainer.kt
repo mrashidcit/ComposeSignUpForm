@@ -14,10 +14,12 @@ import androidx.compose.ui.unit.dp
 import com.rashid.saleem.signupform.ui.theme.SignUpFormTheme
 
 @Composable
-fun AddressContainer() {
+fun AddressContainer(
+    modifier: Modifier = Modifier
+) {
 
     Column(
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
         TextField(
             value = "",

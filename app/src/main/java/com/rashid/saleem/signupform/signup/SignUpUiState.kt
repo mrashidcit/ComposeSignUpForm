@@ -14,7 +14,8 @@ data class SignUpUiState(
 
     val isPasswordVisible: Boolean = false,
     val isReEnterPasswordVisible: Boolean = false,
-    val passwordStrength: PasswordStrength = PasswordStrength()
+    val passwordStrength: PasswordStrength = PasswordStrength(),
+    val viewState: SignUpViewState = SignUpViewState.FullName
 )
 
 data class PasswordStrength(
@@ -24,3 +25,28 @@ data class PasswordStrength(
     val isNumber: Boolean = false,
     val isSpecialCharacter: Boolean = false,
 )
+
+enum class SignUpViewState {
+    FullName,
+    Email,
+    Password,
+    Address,
+    Success
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
