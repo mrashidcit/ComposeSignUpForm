@@ -12,6 +12,10 @@ data class SignUpUiState(
     val city: String = "",
     val address: String = "",
 
+    // Validation error messages
+    val firstNameErrorMessage: String? = null,
+    val lastNameErrorMessage: String? = null,
+
     val isPasswordVisible: Boolean = false,
     val isReEnterPasswordVisible: Boolean = false,
     val passwordStrength: PasswordStrength = PasswordStrength(),

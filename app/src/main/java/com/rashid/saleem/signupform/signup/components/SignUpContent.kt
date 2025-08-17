@@ -32,7 +32,9 @@ fun SignUpContent(
         when (uiState.viewState) {
             SignUpViewState.FullName ->
                 FullNameContainer(
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
+                    uiState = uiState,
+                    onAction = onAction
                 )
 
             SignUpViewState.Email ->
