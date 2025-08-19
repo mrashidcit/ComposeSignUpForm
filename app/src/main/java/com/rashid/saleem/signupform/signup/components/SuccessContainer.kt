@@ -27,14 +27,15 @@ fun SuccessContainer(modifier: Modifier = Modifier) {
         Icon(
             painter = painterResource(R.drawable.baseline_check_circle_24),
             contentDescription = null,
-            modifier = Modifier.size(60.dp),
+            modifier = Modifier.size(50.dp),
             tint = Color.Green
         )
         Spacer(modifier = Modifier.height(8.dp))
-        Text("Account Successfully Created.")
+        Text(
+            text = "Account Successfully Created."
+        )
     }
 }
-
 
 @Preview
 @Composable
@@ -45,6 +46,11 @@ private fun SuccessContainerPreview() {
         }
     }
 }
+
+
+
+
+
 
 
 
