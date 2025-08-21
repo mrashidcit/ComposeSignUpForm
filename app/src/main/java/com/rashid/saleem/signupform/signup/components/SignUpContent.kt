@@ -37,9 +37,12 @@ fun SignUpContent(
                     onAction = onAction
                 )
 
-            SignUpViewState.Email ->
+            is SignUpViewState.Email ->
                 EmailContainer(
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
+                    uiState = uiState,
+                    viewState = uiState.viewState,
+                    onAction = onAction
                 )
 
             SignUpViewState.Password ->

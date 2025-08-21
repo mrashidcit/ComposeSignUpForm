@@ -15,6 +15,8 @@ data class SignUpUiState(
     // Validation error messages
     val firstNameErrorMessage: String? = null,
     val lastNameErrorMessage: String? = null,
+    val emailErrorMessage: String? = null,
+    val verificationCodeErrorMessage: String? = null,
 
     val isPasswordVisible: Boolean = false,
     val isReEnterPasswordVisible: Boolean = false,
@@ -30,12 +32,13 @@ data class PasswordStrength(
     val isSpecialCharacter: Boolean = false,
 )
 
-enum class SignUpViewState {
-    FullName,
-    Email,
-    Password,
-    Address,
-    Success
+
+sealed interface SignUpViewState {
+    data object FullName: SignUpViewState
+    data class Email(val showVerificationCode: Boolean = false): SignUpViewState
+    data object Password: SignUpViewState
+    data object Address: SignUpViewState
+    data object Success: SignUpViewState
 }
 
 
