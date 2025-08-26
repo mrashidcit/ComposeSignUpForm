@@ -17,20 +17,28 @@ data class SignUpUiState(
     val lastNameErrorMessage: String? = null,
     val emailErrorMessage: String? = null,
     val verificationCodeErrorMessage: String? = null,
+    val passwordErrorMessage: String? = null,
+    val reEnterPasswordErrorMessage: String? = null,
 
     val isPasswordVisible: Boolean = false,
     val isReEnterPasswordVisible: Boolean = false,
     val passwordStrength: PasswordStrength = PasswordStrength(),
-    val viewState: SignUpViewState = SignUpViewState.FullName
+    val viewState: SignUpViewState = SignUpViewState.Password
 )
 
 data class PasswordStrength(
-    val isMinLength6: Boolean = false,
-    val isUppercase: Boolean = false,
-    val isLowercase: Boolean = false,
-    val isNumber: Boolean = false,
-    val isSpecialCharacter: Boolean = false,
-)
+    val hasMinLength6: Boolean = false,
+    val hasUppercase: Boolean = false,
+    val hasLowercase: Boolean = false,
+    val hasNumber: Boolean = false,
+    val hasSpecialCharacter: Boolean = false,
+) {
+
+    fun isAllCheckPassed(): Boolean {
+        return hasMinLength6 && hasUppercase && hasLowercase && hasNumber && hasSpecialCharacter
+    }
+
+}
 
 
 sealed interface SignUpViewState {

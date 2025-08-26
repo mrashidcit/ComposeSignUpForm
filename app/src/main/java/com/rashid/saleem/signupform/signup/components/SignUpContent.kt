@@ -12,6 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.rashid.saleem.signupform.signup.SignUpAction
 import com.rashid.saleem.signupform.signup.SignUpUiState
 import com.rashid.saleem.signupform.signup.SignUpViewState
@@ -47,7 +48,9 @@ fun SignUpContent(
 
             SignUpViewState.Password ->
                 PasswordContainer(
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
+                    uiState = uiState,
+                    onAction = onAction
                 )
 
             SignUpViewState.Address ->

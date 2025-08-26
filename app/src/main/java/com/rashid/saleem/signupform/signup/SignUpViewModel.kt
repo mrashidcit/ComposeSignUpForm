@@ -3,6 +3,7 @@ package com.rashid.saleem.signupform.signup
 import android.provider.ContactsContract.CommonDataKinds.Email
 import androidx.lifecycle.ViewModel
 import com.rashid.saleem.signupform.useCases.EmailValidationUseCase
+import com.rashid.saleem.signupform.useCases.PasswordValidationUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -13,6 +14,7 @@ class SignUpViewModel: ViewModel() {
     val uiState = _uiState.asStateFlow()
 
     private val emailValidationUseCase: EmailValidationUseCase = EmailValidationUseCase()
+    private val passwordValidationUseCase = PasswordValidationUseCase()
 
     fun onAction(action: SignUpAction) {
         when (action) {
@@ -24,12 +26,28 @@ class SignUpViewModel: ViewModel() {
             is SignUpAction.EmailOnValueChange -> emailOnValueChange(action.value)
             is SignUpAction.VerificationCodeOnValueChange -> verificationCodeOnValueChange(action.value)
             SignUpAction.NextOnClick -> nextOnClick()
-            is SignUpAction.PasswordOnValueChange -> TODO()
-            is SignUpAction.ReEnterPasswordOnValueChange -> TODO()
-            SignUpAction.TogglePasswordVisibility -> TODO()
-            SignUpAction.ToggleReEnterPasswordVisibility -> TODO()
+            is SignUpAction.PasswordOnValueChange -> passwordOnValueChange(action.value)
+            is SignUpAction.ReEnterPasswordOnValueChange -> reEnterPasswordOnValueChange(action.value)
+            SignUpAction.TogglePasswordVisibility -> togglePasswordVisibility()
+            SignUpAction.ToggleReEnterPasswordVisibility -> toggleReEnterPasswordVisibility()
         }
     }
+
+    private fun togglePasswordVisibility() {
+        val updatedUiState = uiState.value.copy(
+            isPasswordVisible = uiState.value.isPasswordVisible.not()
+        )
+        _uiState.update { updatedUiState }
+    }
+
+    private fun toggleReEnterPasswordVisibility() {
+        val updatedUiState = uiState.value.copy(
+            isReEnterPasswordVisible = uiState.value.isReEnterPasswordVisible.not()
+        )
+        _uiState.update { updatedUiState }
+    }
+
+
 
     private fun firstNameOnValueChange(value: String) {
         val updatedUiState = uiState.value.copy(
@@ -67,6 +85,30 @@ class SignUpViewModel: ViewModel() {
         _uiState.update { updatedUiState }
     }
 
+    private fun passwordOnValueChange(value: String) {
+
+        val result = passwordValidationUseCase.execute(value)
+
+        val updatedUiState = uiState.value.copy(
+            password = value,
+            passwordErrorMessage = null,
+            passwordStrength = result
+        )
+
+        _uiState.update { updatedUiState }
+    }
+
+    private fun reEnterPasswordOnValueChange(value: String) {
+        val updatedUiState = uiState.value.copy(
+            reEnterPassword = value,
+            reEnterPasswordErrorMessage = null
+        )
+
+        _uiState.update { updatedUiState }
+    }
+
+
+
 
 
 
@@ -79,7 +121,7 @@ class SignUpViewModel: ViewModel() {
         val nextViewState = when (currentViewState) {
             SignUpViewState.FullName -> handleFullNameNextOnClick()
             is SignUpViewState.Email -> handleEmailNextOnClick(currentViewState)
-            SignUpViewState.Password -> SignUpViewState.Address
+            SignUpViewState.Password -> handlePasswordNextOnClick(currentViewState)
             SignUpViewState.Address -> SignUpViewState.Success
             SignUpViewState.Success -> return  // Navigate to next screen
         }
@@ -89,6 +131,36 @@ class SignUpViewModel: ViewModel() {
                 viewState = nextViewState
             )
         }
+    }
+
+    private fun handlePasswordNextOnClick(viewState: SignUpViewState): SignUpViewState {
+
+        val result = passwordValidationUseCase.execute(uiState.value.password)
+
+        if (!result.isAllCheckPassed()) {
+            val updatedUiSTate = uiState.value.copy(
+                passwordErrorMessage = "Please enter strong password"
+            )
+
+            _uiState.update { updatedUiSTate }
+
+            return viewState
+        }
+
+        val password = uiState.value.password
+        val reEnterPassword = uiState.value.reEnterPassword
+        if (password != reEnterPassword) {
+            val updatedUiSTate = uiState.value.copy(
+                reEnterPasswordErrorMessage = "Both passwords didn't match."
+            )
+
+            _uiState.update { updatedUiSTate }
+
+            return viewState
+        }
+
+
+        return SignUpViewState.Address
     }
 
     private fun handleEmailNextOnClick(currentViewState: SignUpViewState.Email): SignUpViewState {
