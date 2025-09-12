@@ -20,9 +20,9 @@ class SignUpViewModel: ViewModel() {
         when (action) {
             is SignUpAction.FirstNameOnValueChange -> firstNameOnValueChange(action.value)
             is SignUpAction.LastNameOnValueChange -> lastNameOnValueChange(action.value)
-            is SignUpAction.AddressOnValueChange -> TODO()
-            is SignUpAction.CityOnValueChange -> TODO()
-            is SignUpAction.CountryOnValueChange -> TODO()
+            is SignUpAction.CityOnValueChange -> cityOnValueChange(action.value)
+            is SignUpAction.CountryOnValueChange -> countryOnValueChange(action.value)
+            is SignUpAction.AddressOnValueChange -> addressOnValueChange(action.value)
             is SignUpAction.EmailOnValueChange -> emailOnValueChange(action.value)
             is SignUpAction.VerificationCodeOnValueChange -> verificationCodeOnValueChange(action.value)
             SignUpAction.NextOnClick -> nextOnClick()
@@ -32,6 +32,31 @@ class SignUpViewModel: ViewModel() {
             SignUpAction.ToggleReEnterPasswordVisibility -> toggleReEnterPasswordVisibility()
         }
     }
+
+    private fun cityOnValueChange(value: String) {
+        val updateUiState = uiState.value.copy(
+            city = value,
+            cityErrorMessage = null
+        )
+        _uiState.update { updateUiState }
+    }
+
+    private fun countryOnValueChange(value: String) {
+        val updateUiState = uiState.value.copy(
+            country = value,
+            countryErrorMessage = null
+        )
+        _uiState.update { updateUiState }
+    }
+
+    private fun addressOnValueChange(value: String) {
+        val updateUiState = uiState.value.copy(
+            address = value
+        )
+        _uiState.update { updateUiState }
+    }
+
+
 
     private fun togglePasswordVisibility() {
         val updatedUiState = uiState.value.copy(
@@ -122,7 +147,7 @@ class SignUpViewModel: ViewModel() {
             SignUpViewState.FullName -> handleFullNameNextOnClick()
             is SignUpViewState.Email -> handleEmailNextOnClick(currentViewState)
             SignUpViewState.Password -> handlePasswordNextOnClick(currentViewState)
-            SignUpViewState.Address -> SignUpViewState.Success
+            SignUpViewState.Address -> handleAddressNextOnClick(currentViewState)
             SignUpViewState.Success -> return  // Navigate to next screen
         }
 
@@ -131,6 +156,29 @@ class SignUpViewModel: ViewModel() {
                 viewState = nextViewState
             )
         }
+    }
+
+    private fun handleAddressNextOnClick(currentViewState: SignUpViewState): SignUpViewState {
+
+        val cityErrorMessage = if(uiState.value.city.isEmpty())
+            "Please enter city."
+        else
+            null
+        val countryErrorMessage = if (uiState.value.country.isEmpty())
+            "Please enter country."
+        else
+            null
+
+        if (cityErrorMessage != null || countryErrorMessage != null) {
+            val updatedUiState = uiState.value.copy(
+                cityErrorMessage = cityErrorMessage,
+                countryErrorMessage = countryErrorMessage
+            )
+            _uiState.update { updatedUiState }
+            return currentViewState
+        }
+
+        return SignUpViewState.Success
     }
 
     private fun handlePasswordNextOnClick(viewState: SignUpViewState): SignUpViewState {

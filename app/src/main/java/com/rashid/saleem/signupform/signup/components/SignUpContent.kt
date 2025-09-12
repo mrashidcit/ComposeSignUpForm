@@ -55,7 +55,9 @@ fun SignUpContent(
 
             SignUpViewState.Address ->
                 AddressContainer(
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
+                    uiState = uiState,
+                    onAction = onAction
                 )
 
             SignUpViewState.Success ->

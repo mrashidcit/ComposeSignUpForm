@@ -19,11 +19,13 @@ data class SignUpUiState(
     val verificationCodeErrorMessage: String? = null,
     val passwordErrorMessage: String? = null,
     val reEnterPasswordErrorMessage: String? = null,
+    val cityErrorMessage: String? = null,
+    val countryErrorMessage: String? = null,
 
     val isPasswordVisible: Boolean = false,
     val isReEnterPasswordVisible: Boolean = false,
     val passwordStrength: PasswordStrength = PasswordStrength(),
-    val viewState: SignUpViewState = SignUpViewState.Password
+    val viewState: SignUpViewState = SignUpViewState.Address
 )
 
 data class PasswordStrength(
